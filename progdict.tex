@@ -39,7 +39,10 @@
 		$\downarrow$ & Push (onto the stack) \\ \hline
 		$\uparrow$ & Pull (off of the stack) \\ \hline
 		$\lambda$ & Null operation \\ & (no print, push, or pull) \\ \hline
-	\end{tabular}
+	\end{tabular} \linebreak
+
+	Derivation Examples: $01$, $00001111$, $0000000011111111$.
+
 	\pagebreak
 
 	\FlushLeft \normalsize
@@ -303,4 +306,82 @@ path(Origin, Destination, TotalDistance) :-
 	Whenever path is called with two locations that are indirectly linked, the first thing that will happen is that all directly linked locations to the Origin will be checked; these are the Intermediate locations. These locations will eached be checked to see if they have a direct link to the Destination, otherwise their directly linked locations will act as new Intermediates and themselves go through the same check. \linebreak
 
 	Once an Intermediate is found that directly connects to the Destination, the recursion will cease and the value of true will be returned, along with the total distance. If all recursion becomes exhausted and no satisfactory Intermediate is found, the value of false will be returned.
+	\pagebreak
+
+	\section{Programming Tools \& Languages: Last Ten Questions}
+	\subsection{Number of nodes in a linked list (pseudocode)}
+	\begin{lstlisting}[language = C, tabsize = 8]
+int numberOfNodes(head) {
+	int n = 1;
+	temp = head;
+
+	while (temp -> next != NULL) {
+		n += 1;
+		temp = temp -> next;
+	}
+
+	return n;
+}
+	\end{lstlisting}
+
+	\subsection{Number of nodes in a linked list (pseudocode, $O(\frac{n}{2})$ complexity)}
+	\begin{lstlisting}[language = C, tabsize = 8]
+int numberOfNodesQuick(head) {
+	int n = 1;
+	temp = head;
+
+	while (temp -> next != NULL && temp -> next -> next != NULL) {
+		n += 2;
+		temp = temp -> next -> next;
+	}
+
+	if (temp -> next != NULL) {
+		n += 1;
+	}
+
+	return n;
+}
+	\end{lstlisting}
+
+	\subsection{Return middle node of linked list (pseudocode)}
+	\begin{lstlisting}[language = C, tabsize = 8]
+node middleNode(head, int length) {
+	temp = head;
+
+	for (int i = 0; i < length / 2; i++) {
+		temp = temp -> next;
+	}
+
+	return temp;
+}
+	\end{lstlisting}
+
+	\subsection{Return middle node of linked list with two pointers}
+	Declare two pointers and initialize them with the head value. Let the first pointer be known as the one-jump, and the second as the two-jump. While the two-jump pointer's next is not equal to NULL and it's next-next is not equal to NULL, have the one-jump pointer take on the next value one node ahead, and have the two-jump pointer take on the next value two nodes ahead. When the two-jump has a next that is NULL, the one-jump will be in the middle. \linebreak
+
+	For example, if a linked list has $9$ nodes, the two-jump will go from node $1$ to $3$ to $5$ to $7$ to $9$, then stop. The one-jump will go from node $1$ to $2$ to $3$ to $4$ to $5$, then stop. $5$ is halfway between node $1$ and node $9$.
+
+	\subsection{Circualr singly-linked list check with two pointers}
+	Declare two pointers as before when finding the middle node of a linked list: one-jump and two-jump. A circular linked list can be detected if you repeatedly have the one-jump update to its next node, and have the two-jump update to its next-next node. If ever the nodes ever are equal, i.e. they are pointing to the same node, then there is a cycle in the list. If there wasn't, the two-jump would reach a terminal point well ahead of the one-jump.
+
+	\subsection{Reachability}
+
+	\subsection{Stable vs. Non-Stable Sorting Algorithms}
+	A stable sorting algorithm is one that preserves the order of elements of equal value from before sorting to after sorting. Insertion Sort is stable, because when an equal value element is inserted, it will not be able to move beyong another equal value element, because the citeria for an insertion swap requires the lower element to be strictly less than the higher element. Selection Sort, in its simplest implementation, is not stable. If a minimum finding function that uses a linear search is used, the last instance of an equal value element will become the first instance, breaking stability.
+
+	\subsection{Fundamental Data Structures}
+	\begin{itemize}
+		\item Array
+		\item Dictionary (a.k.a. Hash Table, Associative Array)
+		\item Linked List (singly or doubly linked)
+		\item Binary Search Tree (Lefthand children are smaller, righthand are larger)
+		\item Heap Tree (In a maximum heap, all children are smaller)
+		\item Stack
+	\end{itemize}
+
+	\subsection{P vs. NP}
+	The "P" in P vs. NP stands for polynomial. If an algorithm qualifies for a P-class problem, then the Big-$O$ complexity of the algorithm is modelled by a polynomial expression; In short, the algorithm runs in polynomial-class time in reference to the size of the input. Alternatly, if an algorithm is of the NP-class, its time complexity is non-polynomial, which is ususally worse than polynomial complexity. For example, there are only NP-class algorithms for solutions to the Travelling Salesman Problem, which entales travelling to every node in a graph (every city in a region) and returning to your starting location while minimizing distance.
+
+	\subsection{Class vs. Struct}
+	A struct is a composite data type with multiple data fields of any type defined in the programming language. A class combines the data-ordering of a struct with associated functions called methods, which manipulate the data ordered by the class. When a class is instantiated, the instance is referred to as an object.
 \end{document}

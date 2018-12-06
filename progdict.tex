@@ -1,12 +1,20 @@
 \documentclass[12pt]{article}
+
 \usepackage[letterpaper,total={7in,10in}]{geometry}
 \usepackage{tikz}
+\usepackage{graphicx}
 \usepackage{ragged2e}
 \usepackage{listings}
 \usepackage{color}
 \usepackage{multicol}
+\usepackage{hyperref}
+
 \renewcommand{\ttdefault}{txtt}
 \renewcommand{\familydefault}{\ttdefault}
+
+\lstset{backgroundcolor = \color[rgb]{0.88, 0.88, 0.96}}
+\lstset{numbers = left}
+\lstset{breaklines = true}
 \begin{document}
 	\Centering \huge \textbf{\underline{Programming Dictionary}}
 
@@ -294,7 +302,9 @@ link(d, f, 7).
 link(e, g, 13).
 link(e, h, 19).
 
-path(Origin, Destination, Distance) :- link(Origin, Destination, Distance).
+path(Origin, Destination, Distance) :-
+	link(Origin, Destination, Distance)
+.
 path(Origin, Destination, TotalDistance) :-
 	link(Origin, Intermediate, DistanceA),
 	path(Intermediate, Destination, DistanceB),
@@ -384,4 +394,90 @@ node middleNode(head, int length) {
 
 	\subsection{Class vs. Struct}
 	A struct is a composite data type with multiple data fields of any type defined in the programming language. A class combines the data-ordering of a struct with associated functions called methods, which manipulate the data ordered by the class. When a class is instantiated, the instance is referred to as an object.
+	\pagebreak
+
+	\section{Palindromes in Prolog}
+	\subsection{palindrome.pl}
+	\begin{lstlisting}[language = Prolog, tabsize = 8]
+concat([], L, L).
+concat([X|L1], L2, [X|L3]) :- concat(L1, L2, L3).
+reverselist([], []).
+reverselist([Head|Tail], Reversed) :-
+	reverselist(Tail, ReversedTail),
+	concat(ReversedTail, [Head], Reversed)
+.
+palindrome(X) :- reverselist(X, X).
+	\end{lstlisting}
+	\subsection{Analysis}
+	\subsubsection{concat()}
+	The three parameters in concat() are the lefthand list, the righthand list, and the concatenated list. Clearly, the concatenated list is where all the lefthand list's elements are added first, then followed by the elements of the righthand list. As seen in the second statement, To concatenate $[X|L_1]$ with $L_2$, $L_1$ and $L_2$ have to concatenate to $L_3$, which results in $[X|L_3]$. Eventually, after enough recursive calls, $L_1$ will be an empty list, in which case the first statement will be invoked, returning $L_2$ back up the stack.
+
+	\subsubsection{reverselist()}
+	The two parameters in reverselist() are the original list, $[Head|Tail]$, and the reversed list, $Reversed$. First, a recursive call is issued with $Tail$ and $ReversedTail$ as the parameters. Second, the recursive call is conjucted with a concat() call of $ReversedTail$ with $[Head]$, which results in $Reveresed$. Back to the first call, the $Tail$ will repeatedly be widdled down until it is empty, which will fulfill the statement that an empty list is the reverse of itself. When this happens, the final element will be in $ReversedTail$ in the highest call (stack-wise) will be concatenated to the element before it, and this will cascade down the stack of calls, completing the $Reversed$ list.
+
+	\subsubsection{palindrome()}
+	A palindrome is any ordered arrangement that is its own reverse. Thus, if a call of reverselist() is issued with $X$ and $X$ as both parameters, and the end result is true, then $X$ is a palindrome.
+	\pagebreak
+
+	\section{My Project: Visualized Sorting Algorithms Demonstration}
+	\Centering
+	\includegraphics[width = 0.8\linewidth]{sortingdemo.png}
+	\FlushLeft
+
+	I wrote this demo program in Python, mainly with the Tcl/Tk binding library "tkinter", that implements the following sorting algorithms on a visualized list of numbers represented by rectangles:
+	\begin{itemize}
+		\item Bogo
+		\item Bubble (optimized)
+		\item Insertion
+		\item Selection
+		\item Merge Sort
+		\begin{itemize}
+			\item $O(0)$ extra space a.k.a. In-Place
+			\item $O(n)$ extra space a.k.a. Overwrite
+		\end{itemize}
+		\item Heap
+		\item Quick
+	\end{itemize}
+
+	You can adjust the amount of elements to sort from $10$ to $800$ in $10$-element increments, introduce a time delay accurate to $10^{-4}$ seconds, and write recorded sorting time information to a text file. Check out \url{https://github.com/cSquaerd/visualSort} for more updates in the future. The code is as follows for Version 1.2:
+
+	\subsection{ccVisualSort.py}
+	\small
+	\lstinputlisting[language = Python, tabsize = 4, showstringspaces = false, firstline = 1, lastline = 42]{ccVisualSort.py}
+	\pagebreak
+
+	\lstinputlisting[language = Python, tabsize = 4, showstringspaces = false, firstline = 43, firstnumber = 43, lastline = 85]{ccVisualSort.py}
+	\pagebreak
+
+	\lstinputlisting[language = Python, tabsize = 4, showstringspaces = false, firstline = 86, firstnumber = 86, lastline = 126]{ccVisualSort.py}
+	\pagebreak
+
+	\lstinputlisting[language = Python, tabsize = 4, showstringspaces = false, firstline = 127, firstnumber = 127, lastline = 169]{ccVisualSort.py}
+	\pagebreak
+
+	\lstinputlisting[language = Python, tabsize = 4, showstringspaces = false, firstline = 170, firstnumber = 170, lastline = 215]{ccVisualSort.py}
+	\pagebreak
+
+	\lstinputlisting[language = Python, tabsize = 4, showstringspaces = false, firstline = 216, firstnumber = 216, lastline = 266]{ccVisualSort.py}
+	\pagebreak
+
+	\lstinputlisting[language = Python, tabsize = 4, showstringspaces = false, firstline = 267, firstnumber = 267, lastline = 300]{ccVisualSort.py}
+	\pagebreak
+
+	\lstinputlisting[language = Python, tabsize = 4, showstringspaces = false, firstline = 303, firstnumber = 303, lastline = 332]{ccVisualSort.py}
+	\pagebreak
+
+	\lstinputlisting[language = Python, tabsize = 4, showstringspaces = false, firstline = 333, firstnumber = 333, lastline = 356]{ccVisualSort.py}
+	\pagebreak
+
+	\lstinputlisting[language = Python, tabsize = 4, showstringspaces = false, firstline = 357, firstnumber = 357, lastline = 387]{ccVisualSort.py}
+	\pagebreak
+
+	\lstinputlisting[language = Python, tabsize = 4, showstringspaces = false, firstline = 388, firstnumber = 388]{ccVisualSort.py}
+	\pagebreak
+
+	\normalsize
+	\section{Puzzles}
+	\subsection{Eight Balls}
+	You are given eight balls. They are visaully identical, but one weighs more than the other seven, which themselves are all of equal weight.
 \end{document}

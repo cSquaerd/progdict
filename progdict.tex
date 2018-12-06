@@ -146,4 +146,161 @@ void reverseDLL_Recursive(head, tail) {
 	}
 }
 	\end{lstlisting}
+	\subsection{Pointer to a Pointer}
+	A use of a pointer-to-a-pointer in C would be to insert an element into a sorted singly-linked list. Take the following list:
+
+	\begin{lstlisting}
+head:
+ [2] -> [4] -> [7] -> [10] -> [13]
+	\end{lstlisting}
+
+	Say we want to insert the node \textbf{[9]} into the list; If we make a pointer-to-pointer, call it \textbf{pp}, and make it point to the \textbf{next} attribute of each node, we can insert \textbf{[9]} as follows: \linebreak
+
+	First, we set the value of \textbf{pp} to be the \textbf{head} of the list: \linebreak
+
+	\textbf{*pp = head;} \linebreak
+
+	where head is the pointer to the first struct in the list. We can visualize this below:
+
+	\begin{lstlisting}
+ pp
+  |
+  V
+head:
+ [2] -> [4] -> [7] -> [10] -> [13]
+	\end{lstlisting}
+
+	\textbf{*pp} is \textbf{[2]}, and \textbf{[2] -> data} is 2, which is less than 9. Until we find a candidate \textbf{*pp -> data} that is greater than 9, we keep going by setting \textbf{pp} to the address of the next node with \textbf{*pp = \&(*pp -> next)}.
+
+	\begin{lstlisting}
+ pp -+
+     |
+head:V
+ [2] -> [4] -> [7] -> [10] -> [13]
+	\end{lstlisting}
+
+	\textbf{*pp} is \textbf{[2] -> next} which is \textbf{[4]}, \textbf{[4] -> data} is 4 which is less than 9, keep going; \textbf{*pp = \&(*pp -> next)}
+
+	\begin{lstlisting}
+ pp --------+
+            |
+head:       V
+ [2] -> [4] -> [7] -> [10] -> [13]
+	\end{lstlisting}
+
+	\textbf{*pp} is \textbf{[4] -> next} which is \textbf{[7]}, \textbf{[7] -> data} is 7 which is less than 9, keep going; \textbf{*pp = \&(*pp -> next)}
+
+	\begin{lstlisting}
+ pp ---------------+
+                   |
+head:              V
+ [2] -> [4] -> [7] -> [10] -> [13]
+	\end{lstlisting}
+
+	Paydirt! \textbf{*pp -> data} is 10, which is greater than 9. Now we do the following: \linebreak
+
+	\textbf{[9] -> next = *pp;}
+
+	\begin{lstlisting}
+ pp ---------------+
+                   |
+head:              V
+ [2] -> [4] -> [7] -> [10] -> [13]
+                      ^
+                      |
+                 [9] -+
+\end{lstlisting}
+
+	\textbf{*pp = [9];}
+
+	\begin{lstlisting}
+ pp ---------------+
+                   |
+head:              V
+ [2] -> [4] -> [7] -+ [10] -> [13]
+                   /  ^
+                  V   |
+                 [9] -+
+\end{lstlisting}
+
+	The list is still ordered, and \textbf{pp} is needed no longer.
+
+	\subsection{Sorting Algorithm with $O(n)$ Complexity}
+	An optimised Bubble Sort that stops after doing a pass thru an array wherein no swaps occur will run in $O(n)$ time on an already-sorted list. In a sorted list, comparing every element with its next element all the way to the end will not prompt Bubble Sort to perform any swaps at all. When a single pass of the array is completed and no swaps have occured, a proper Bubble Sort will stop, as no swaps is a sign of a sorted list.
+
+	\subsection{Selection Sort Complexity}
+	Consider the worst case of Selection Sort: a completely-reversed array, say $(6, 5, 4, 3, 2, 1)$. On the first pass, $1$ is selected, and has to be moved $5$ indices, $n - 1$. On the second pass, $2$ is selected, and has to be moved $4$ indices, $n - 2$. This eventually boils down to $n - 1 + n - 2 + n - 3 + n - 4 + n - 5$ operations; given $n = 6$, this becomes $6 - 1 + 6 - 2 + 6 - 3 + 6 - 4 + 6 - 5 = 5 + 4 + 3 + 2 + 1 = 5 * 6 / 2$ (per Gauss' Formula). If we reintroduce $n$, we get $\frac{(n - 1) * n}{2} = \frac{n^2 - n}{2}$. Overall, Selection Sort's worst case (and average case) boils down to $O(n^2)$.
+
+	\subsection{Insertion Sort Complexity}
+	Consider again $(6, 5, 4, 3, 2, 1)$. On the first pass of Insertion Sort, the $5$ is swapped $1$ time, $n - 5$. On the second pass, the $4$ is swapped $2$ times, $n - 4$. Note the pattern. Overall, there are $n - 5 + n - 4 + n - 3 + n - 2 + n - 1$. Recall from the previous problem on Selection Sort that this boils down to $\frac{(n - 1)n}{2} = \frac{n^2 - n}{2}$. Insertion Sort is also worst-case and average-case $O(n^2)$ complexity.
+
+	\subsection{\textit{ordered} Predicate in Prolog}
+	\subsubsection{\textit{sorted.pl}}
+	\begin{lstlisting}[language = Prolog]
+ordered([X]).
+ordered([X, Y|Z]) :- X < Y, ordered([Y|Z]).
+	\end{lstlisting}
+
+	\subsubsection{Output on $[1, 2, 4, 8, 16]$ with trace-on in GProlog}
+	\begin{lstlisting}
+| ?- ordered([1,2,4,8,16]).
+      1    1  Call: ordered([1,2,4,8,16]) ?
+      2    2  Call: 1<2 ?
+      2    2  Exit: 1<2 ?
+      3    2  Call: ordered([2,4,8,16]) ?
+      4    3  Call: 2<4 ?
+      4    3  Exit: 2<4 ?
+      5    3  Call: ordered([4,8,16]) ?
+      6    4  Call: 4<8 ?
+      6    4  Exit: 4<8 ?
+      7    4  Call: ordered([8,16]) ?
+      8    5  Call: 8<16 ?
+      8    5  Exit: 8<16 ?
+      9    5  Call: ordered([16]) ?
+      9    5  Exit: ordered([16]) ?
+      7    4  Exit: ordered([8,16]) ?
+      5    3  Exit: ordered([4,8,16]) ?
+      3    2  Exit: ordered([2,4,8,16]) ?
+      1    1  Exit: ordered([1,2,4,8,16]) ?
+
+true ?
+
+yes
+{trace}
+| ?-
+	\end{lstlisting}
+	\pagebreak
+
+	\subsection{Labelled Path (with cost) in Prolog}
+	\subsubsection{ASCII-art chart of my path}
+	\begin{lstlisting}
+                           +-[11]-> (d) -[7]-> (f)
+(a) -[1]-> (b) -[3]-> (c) -+
+                           +-[5]-> (e) -+-[13]-> (g)
+                                        |
+                                        +-[19]-> (h)
+	\end{lstlisting}
+
+	\subsubsection{\textit{charliesPath.pl}}
+	\begin{lstlisting}[language = Prolog, tabsize = 8]
+link(a, b, 1).
+link(b, c, 3).
+link(c, d, 11).
+link(c, e, 5).
+link(d, f, 7).
+link(e, g, 13).
+link(e, h, 19).
+
+path(Origin, Destination, Distance) :- link(Origin, Destination, Distance).
+path(Origin, Destination, TotalDistance) :-
+	link(Origin, Intermediate, DistanceA),
+	path(Intermediate, Destination, DistanceB),
+	TotalDistance is DistanceA + DistanceB
+.
+	\end{lstlisting}
+
+	\subsubsection{Recursion Analysis}
+	Whenever path is called with two locations that are indirectly linked, the first thing that will happen is that all directly linked locations to the Origin will be checked; these are the Intermediate locations. These locations will eached be checked to see if they have a direct link to the Destination, otherwise their directly linked locations will act as new Intermediates and themselves go through the same check. \linebreak
+
+	Once an Intermediate is found that directly connects to the Destination, the recursion will cease and the value of true will be returned, along with the total distance. If all recursion becomes exhausted and no satisfactory Intermediate is found, the value of false will be returned.
 \end{document}

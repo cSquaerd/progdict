@@ -479,5 +479,16 @@ palindrome(X) :- reverselist(X, X).
 	\normalsize
 	\section{Puzzles}
 	\subsection{Eight Balls}
-	You are given eight balls. They are visaully identical, but one weighs more than the other seven, which themselves are all of equal weight.
+	You are given eight balls. They are visaully identical, but one weighs more than the other seven, which themselves are all of equal weight. You have a mechanical balance as well, but can only make two measurements to determine the heavy ball. What measurements do you make? \linebreak
+
+	Let the balls be represened by the set $S = \{b_1, b_2, b_3, b_4, b_5, b_6, b_7, b_8, \}$. Let a measurement be the output of the function $f(A, B) =  \max(\sum a_i, \sum b_i)$, where $A$ and $B$ are subsets of $S$, and $a_i$ and $b_i$ are elements of $A$ and $B$ respectivly, and $\sum$ is an operation to compute the total weight of all balls in a set. If the set of balls in $A$ weigh more than those in $B$, then $f(A, B) = A$ and vice versa. If the sets are of equal weight, then $f(A, B) = \emptyset$. \hfill \null \linebreak
+
+	To find which ball in $S$ is heaviest, we first observe $f(A = \{b_1, b_2, b_3\}, B = \{b_4, b_5, b_6\})$. If result is $A$, then we know the heaviest ball is in $A$, at which point we measure any two balls from $A$, for example $f(A = \{b_1\}, B = \{b_3\})$. Here, a result of $A$ or $B$ will reveal the heaviest ball, and a tie will indicate that $b_2$, the ball not weighed again, is heaviest. This method follows for if $B = \{b_4, b_5, b_6\}$ is the result in the first measurement as well. \linebreak
+
+	However, if the first measurement yields a result of $\emptyset$, then the first six balls are not the heaviest, leaving $b_7$ and $b_8$. Simply checking $f(A = \{b_7\}, B = \{b_8\})$ at this point will reveal the heaviest ball.
+
+	\subsection{Prisoners and Hats Dilemma}
+	Three prisoners are given three of four hats to put on. Of the four hats, two are \textcolor{red}{red}, and two are \textcolor{blue}{blue}. One hat is not put on and hidden from the prisoners. The prisoners $A$, $B$, and $C$ are lined up such that $A$ cannot see anyone, $B$ can see $A$, and $C$ can see both $B$ and $A$. None of the prisoners can see their own hats, nor can they talk to the other prisoners. They each must guess the color of their hat. If any one of them are correct, they will all be released, and if any one of them are wrong, they will all be sent to solitary confinement for life. How can all of the prisoners go free? \linebreak
+
+	First, consider $C$, who can see two of the hats. If the hats are the same color, both \textcolor{blue}{blue} or \textcolor{red}{red}, then $C$ can say the opposite of what they see. However, if $C$ sees both one \textcolor{red}{red} and one \textcolor{blue}{blue} hat, then they cannot be sure what their own hat is. At this point, if $C$ doesn't jump at guessing first, then $B$ should recognize that they have the color opposite of $A$, and say so. In either case, as long as the prisoners have thought this thru, $A$ has to do nothing, $B$ has to wait to see if $C$ answers, and $C$ has to just observe the hats of $A$ and $B$.
 \end{document}

@@ -22,8 +22,9 @@
 
 	\large Begun on Dec. 6th, 2018
 
-	\FlushLeft \large \section{Compiler Theoretical Foundations}
+	\FlushLeft \normalsize \tableofcontents
 
+	\section{Compiler Theoretical Foundations} \large
 	\Centering \begin{tikzpicture}
 		\node at (0, 3) {Push Down Automata for strings of the form $0^n1^n$};
 		\draw [very thick, ->] (-4.5, 0) -- (-3.75, 0);
@@ -377,7 +378,7 @@ node middleNode(head, int length) {
 	\subsection{Reachability}
 	It is possible to run a reachability function on a directed graph / linked list map that runs in polynomial time. For this, we need an array, identified as $marked$, and a stack, identified as $reached$. Starting from the root node of travel, push this node onto $reached$. Then, begin a loop which will continue until $reached$ is empty, or until the desired node to reach gets pushed to $reached$. In each pass, if the top element in $reached$ has children, pop it off and append its address a.k.a. indentifier to $marked$. Then, push all of its child nodes onto $reached$, except those already in $marked$. This condition prevents a cyclic map from running the algorithm forever. \linebreak
 
-	As the loop proceeds, eventually all ultimate child nodes will be pushed to the stack. If the top node at the start of a pass has no children, then pop it off and start a new pass of the loop. If only ultimate children are in the stack, and none of them are the desired node, then $reached$ will be emptied, and a $false$ value can be returned. If the node-to-be-reached is ever pushed to $reached$ however, then a $true$ value can be returned. With the $marked$ array, no node will ever be pushed to $reached$ twice, which makes this a P-class algorithm.
+	As the loop proceeds, eventually all ultimate child nodes will be pushed to the stack. If the top node at the start of a pass has no children, then pop it off and start a new pass of the loop. If only ultimate children are in the stack, and none of them are the desired node, then $reached$ will be emptied, and a $false$ value can be returned. If the node-to-be-reached is ever pushed to $reached$ however, then a $true$ value can be returned. With the $marked$ array, no node will ever be pushed to $reached$ twice, which makes this a P-class algorithm. \pagebreak
 
 	\subsection{Stable vs. Non-Stable Sorting Algorithms}
 	A stable sorting algorithm is one that preserves the order of elements of equal value from before sorting to after sorting. Insertion Sort is stable, because when an equal value element is inserted, it will not be able to move beyong another equal value element, because the citeria for an insertion swap requires the lower element to be strictly less than the higher element. Selection Sort, in its simplest implementation, is not stable. If a minimum finding function that uses a linear search is used, the last instance of an equal value element will become the first instance, breaking stability.
